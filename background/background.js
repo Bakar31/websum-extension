@@ -1,4 +1,4 @@
-import { summarizeText } from './utils/api.js';
+import { summarizeText } from '../utils/api.js';
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'summarize') {

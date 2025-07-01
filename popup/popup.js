@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     summaryDiv.innerText = 'Loading...';
     chrome.storage.sync.get('apiKey', (data) => {
       if (!data.apiKey) {
-        summaryDiv.innerHTML = 'API key not set. <a href="options/options.html" target="_blank">Set it here</a>';
+        const optionsUrl = chrome.runtime.getURL('options/options.html');
+        summaryDiv.innerHTML = `API key not set. <a href="${optionsUrl}" target="_blank">Set it here</a>`;
         return;
       }
 

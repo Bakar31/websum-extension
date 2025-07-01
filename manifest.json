@@ -21,7 +21,8 @@
     }
   },
   "background": {
-    "service_worker": "background/background.js"
+    "service_worker": "background/background.js",
+    "type": "module"
   },
   "options_page": "options/options.html",
   "icons": {
