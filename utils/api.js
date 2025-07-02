@@ -1,4 +1,4 @@
-import { GROQ_API_URL } from './constants.js';
+import { GROQ_API_URL, GROQ_MODEL, MAX_TOKENS, TEMPERATURE } from './constants.js';
 
 export async function summarizeText(apiKey, text) {
   const response = await fetch(GROQ_API_URL, {
@@ -8,19 +8,21 @@ export async function summarizeText(apiKey, text) {
       'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'llama-3.1-8b-instant',
+      model: GROQ_MODEL,
       messages: [
         {
           role: 'system',
-          content: 'Summarize the following text concisely...',
+          content: `You are a text summarization assistant. 
+          Your task is to summarize the given text concisely. The given text is the content from a webpage.
+          DO not add text like "Here is the summary:" or "Summary:"`,
         },
         {
           role: 'user',
           content: text,
         },
       ],
-      max_tokens: 500,
-      temperature: 0.3,
+      max_tokens: MAX_TOKENS,
+      temperature: TEMPERATURE,
     }),
   });
 

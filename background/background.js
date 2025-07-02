@@ -14,6 +14,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ error: 'API key not found.' });
       }
     });
-    return true; // Indicates that the response is sent asynchronously
+    return true; 
   }
 });
