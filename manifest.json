@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "WebSum Chrome Extension",
-  "version": "1.0",
-  "description": "Summarize any webpage using your Groq API key.",
+  "name": "WebSummarizer Chrome Extension",
+  "version": "0.1.0",
+  "description": "Summarize any webpage using your Groq API key. Get concise summaries of any webpage with just one click, with full control over the summarization process.",
   "permissions": [
     "activeTab",
     "storage",
