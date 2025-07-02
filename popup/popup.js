@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
+import { encryptData, decryptData } from '../utils/crypto.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
   const summarizeButton = document.getElementById('summarize');
   const summaryDiv = document.getElementById('summary');
   const settingsToggle = document.getElementById('settings-toggle');
@@ -110,14 +112,46 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function loadApiKey() {
-    const data = await new Promise(resolve => chrome.storage.sync.get('apiKey', resolve));
-    apiKeyInput.value = data.apiKey || '';
+    const data = await new Promise(resolve => chrome.storage.sync.get(['apiKey', 'isEncrypted'], resolve));
+  
+    if (!data.apiKey) {
+      apiKeyInput.value = '';
+      return;
+    }
+  
+    try {
+      // Only try to decrypt if we know it's encrypted
+      apiKeyInput.value = data.isEncrypted 
+        ? await decryptData(data.apiKey)
+        : data.apiKey;
+    } catch (error) {
+      console.error('Failed to decrypt API key:', error);
+      // If decryption fails, show empty field
+      apiKeyInput.value = '';
+    }
   }
 
   async function saveApiKey() {
     const apiKey = apiKeyInput.value.trim();
-    await new Promise(resolve => chrome.storage.sync.set({ apiKey }, resolve));
-    showView('main');
+    if (!apiKey) return;
+  
+    try {
+      const encryptedKey = await encryptData(apiKey);
+      await new Promise(resolve => chrome.storage.sync.set({ 
+        apiKey: encryptedKey,
+        // Store a flag to indicate this is an encrypted key
+        isEncrypted: true
+      }, resolve));
+      showView('main');
+    } catch (error) {
+      console.error('Failed to save API key:', error);
+      // Fallback to unencrypted storage if encryption fails
+      await new Promise(resolve => chrome.storage.sync.set({ 
+        apiKey,
+        isEncrypted: false
+      }, resolve));
+      showView('main');
+    }
   }
 
   async function removeApiKey() {
