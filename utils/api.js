@@ -27,7 +27,40 @@ export async function summarizeText(apiKey, text) {
   });
 
   if (!response.ok) {
-    throw new Error(`Groq API request failed with status ${response.status}`);
+    let errorMessage = 'An error occurred while summarizing the content.';
+    
+    switch (response.status) {
+      case 400:
+        errorMessage = 'Invalid request. The content might be too short or in an unexpected format.';
+        break;
+      case 401:
+        errorMessage = 'Invalid API key. Please check your Groq API key in settings.';
+        break;
+      case 403:
+        errorMessage = 'Access denied. Your API key might be invalid or expired.';
+        break;
+      case 404:
+        errorMessage = 'API endpoint not found. Please check if the service is available.';
+        break;
+      case 413:
+        errorMessage = 'The content is too long to process.';
+        break;
+      case 429:
+        errorMessage = 'Too many requests. Please wait a moment before trying again.';
+        break;
+      case 500:
+      case 502:
+      case 503:
+      case 504:
+        errorMessage = 'The service is currently unavailable. Please try again later.';
+        break;
+      default:
+        errorMessage = `Unable to summarize the content. (Status: ${response.status})`;
+    }
+    
+    const error = new Error(errorMessage);
+    error.status = response.status;
+    throw error;
   }
 
   const data = await response.json();
