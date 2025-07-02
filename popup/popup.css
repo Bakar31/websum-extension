@@ -1,13 +1,47 @@
 body {
   width: 400px;
-  padding: 15px;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: #2c3e50;
 }
 
-h1 {
-  text-align: center;
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eaeaea;
+  background-color: #f8f9fa;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: #2c3e50;
-  margin-bottom: 15px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+#app {
+  padding: 15px;
 }
 
 #app {
@@ -97,6 +131,12 @@ button.loading .loader-spinner {
   display: block;
 }
 
+/* View Toggle */
+.hidden {
+  display: none !important;
+}
+
+/* Main View */
 #summary {
   display: none;
   padding: 12px;
@@ -105,6 +145,89 @@ button.loading .loader-spinner {
   border-left: 4px solid #007bff;
   line-height: 1.5;
   white-space: pre-wrap;
+  margin-top: 15px;
+}
+
+/* Settings View */
+#settings-view {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+#settings-view h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.input-with-button {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+#api-key {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#api-key:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.help-text {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin: 8px 0 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button.primary {
+  background-color: #007bff;
+  color: white;
+}
+
+button.primary:hover:not(:disabled) {
+  background-color: #0069d9;
+}
+
+button.danger {
+  background-color: #dc3545;
+  color: white;
+  min-width: auto;
+  padding: 8px 12px;
+}
+
+button.danger:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .loader {
