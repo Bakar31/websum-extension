@@ -36,7 +36,20 @@
             <i class="fas fa-trash"></i>
           </button>
         </div>
-        <p class="help-text">Your Groq API key is encrypted and stored locally and never sent to our servers.</p>
+        <p class="help-text">Your Groq API key is stored locally and never sent to our servers.</p>
+      </div>
+      <div class="form-group">
+        <label for="model">Model</label>
+        <div class="select-wrapper">
+          <select id="model" class="form-control">
+            <option value="">Loading models...</option>
+          </select>
+          <div id="model-loading" class="loading-spinner" style="display: none;"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="max-tokens">Max Tokens</label>
+        <input type="number" id="max-tokens" min="100" max="8192" value="1000" class="form-control">
       </div>
       <div class="form-actions">
         <button id="save-key" class="primary">Save</button>

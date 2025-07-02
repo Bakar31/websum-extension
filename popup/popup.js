@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const mainView = document.getElementById('main-view');
   const settingsView = document.getElementById('settings-view');
   const apiKeyInput = document.getElementById('api-key');
+  const modelSelect = document.getElementById('model');
+  const maxTokensInput = document.getElementById('max-tokens');
   const saveKeyButton = document.getElementById('save-key');
   const removeKeyButton = document.getElementById('remove-key');
   const cancelSettingsButton = document.getElementById('cancel-settings');
@@ -111,42 +113,111 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  async function loadApiKey() {
-    const data = await new Promise(resolve => chrome.storage.sync.get(['apiKey', 'isEncrypted'], resolve));
-  
-    if (!data.apiKey) {
-      apiKeyInput.value = '';
-      return;
-    }
-  
+  async function populateModels(apiKey) {
+    const loadingSpinner = document.getElementById('model-loading');
+    const defaultOption = modelSelect.options[0];
+    
     try {
-      // Only try to decrypt if we know it's encrypted
-      apiKeyInput.value = data.isEncrypted 
-        ? await decryptData(data.apiKey)
-        : data.apiKey;
+      loadingSpinner.style.display = 'block';
+      modelSelect.disabled = true;
+      defaultOption.textContent = 'Loading models...';
+      
+      const response = await new Promise(resolve => 
+        chrome.runtime.sendMessage({ action: 'getModels' }, resolve)
+      );
+      
+      if (response.error) {
+        console.error('Error fetching models:', response.error);
+        defaultOption.textContent = 'Failed to load models. Try refreshing.';
+        return;
+      }
+      
+      while (modelSelect.options.length > 0) {
+        modelSelect.remove(0);
+      }
+      
+      if (response.models && response.models.length > 0) {
+        response.models.forEach(model => {
+          const option = document.createElement('option');
+          option.value = model.id;
+          option.textContent = model.name;
+          modelSelect.appendChild(option);
+        });
+      } else {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No models available';
+        modelSelect.appendChild(option);
+      }
+      
     } catch (error) {
-      console.error('Failed to decrypt API key:', error);
-      // If decryption fails, show empty field
-      apiKeyInput.value = '';
+      console.error('Failed to fetch models:', error);
+      defaultOption.textContent = 'Error loading models';
+    } finally {
+      loadingSpinner.style.display = 'none';
+      modelSelect.disabled = false;
     }
   }
 
-  async function saveApiKey() {
-    const apiKey = apiKeyInput.value.trim();
-    if (!apiKey) return;
+  async function loadSettings() {
+    const data = await new Promise(resolve => chrome.storage.sync.get(
+      ['apiKey', 'isEncrypted', 'model', 'maxTokens'], 
+      resolve
+    ));
   
+    if (data.apiKey) {
+      try {
+        const decryptedKey = data.isEncrypted 
+          ? await decryptData(data.apiKey)
+          : data.apiKey;
+        
+        apiKeyInput.value = decryptedKey;
+        if (decryptedKey) {
+          populateModels(decryptedKey);
+        }
+      } catch (error) {
+        apiKeyInput.value = '';
+      }
+    }
+    
+    if (data.model) {
+      modelSelect.value = data.model;
+    }
+    
+    if (data.maxTokens) {
+      maxTokensInput.value = data.maxTokens;
+    }
+    
+    if (data.model) {
+      setTimeout(() => {
+        modelSelect.value = data.model;
+      }, 500);
+    }
+  }
+
+  async function saveSettings() {
+    const apiKey = apiKeyInput.value.trim();
+    const model = modelSelect.value;
+    const maxTokens = parseInt(maxTokensInput.value, 10);
+    
+    if (!apiKey) return;
+    
+    const settings = {
+      model,
+      maxTokens: isNaN(maxTokens) ? 1000 : Math.min(8192, Math.max(100, maxTokens))
+    };
+    
     try {
       const encryptedKey = await encryptData(apiKey);
       await new Promise(resolve => chrome.storage.sync.set({ 
+        ...settings,
         apiKey: encryptedKey,
-        // Store a flag to indicate this is an encrypted key
         isEncrypted: true
       }, resolve));
       showView('main');
     } catch (error) {
-      console.error('Failed to save API key:', error);
-      // Fallback to unencrypted storage if encryption fails
       await new Promise(resolve => chrome.storage.sync.set({ 
+        ...settings,
         apiKey,
         isEncrypted: false
       }, resolve));
@@ -159,10 +230,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     apiKeyInput.value = '';
   }
 
-  settingsToggle.addEventListener('click', () => showView('settings'));
-  saveKeyButton.addEventListener('click', saveApiKey);
+  summarizeButton.addEventListener('click', summarize);
+  
+  settingsToggle.addEventListener('click', () => {
+    showView('settings');
+    if (apiKeyInput.value) {
+      populateModels(apiKeyInput.value);
+    }
+  });
+  
+  saveKeyButton.addEventListener('click', saveSettings);
   removeKeyButton.addEventListener('click', removeApiKey);
   cancelSettingsButton.addEventListener('click', () => showView('main'));
   
+  apiKeyInput.addEventListener('change', (e) => {
+    if (e.target.value) {
+      populateModels(e.target.value);
+    }
+  });
+  
+  loadSettings();
   showView('main');
 });

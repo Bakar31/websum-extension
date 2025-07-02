@@ -1,6 +1,8 @@
 import { GROQ_API_URL, GROQ_MODEL, MAX_TOKENS, TEMPERATURE } from './constants.js';
 
-export async function summarizeText(apiKey, text) {
+export const GROQ_MODELS_URL = 'https://api.groq.com/openai/v1/models';
+
+export async function summarizeText({ apiKey, text, model = GROQ_MODEL, maxTokens = MAX_TOKENS }) {
   const response = await fetch(GROQ_API_URL, {
     method: 'POST',
     headers: {
@@ -8,7 +10,7 @@ export async function summarizeText(apiKey, text) {
       'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: GROQ_MODEL,
+      model,
       messages: [
         {
           role: 'system',
@@ -21,7 +23,7 @@ export async function summarizeText(apiKey, text) {
           content: text,
         },
       ],
-      max_tokens: MAX_TOKENS,
+      max_tokens: maxTokens,
       temperature: TEMPERATURE,
     }),
   });
@@ -65,4 +67,34 @@ export async function summarizeText(apiKey, text) {
 
   const data = await response.json();
   return data.choices[0].message.content;
+}
+
+export async function fetchModels(apiKey) {
+  const response = await fetch(GROQ_MODELS_URL, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error(`Failed to fetch models: ${response.status} ${response.statusText}`);
+    error.status = response.status;
+    throw error;
+  }
+
+  const data = await response.json();
+  
+  // Filter and format the models
+  return data.data
+    .filter(model => model.id.includes('llama')) // Only include Llama models
+    .map(model => ({
+      id: model.id,
+      name: model.id
+        .replace('llama-', 'Llama ')
+        .replace(/-/g, ' ')
+        .replace(/(\d+)([a-z])/g, '$1 $2') // Add space between number and letter
+        .replace(/\b\w/g, l => l.toUpperCase()) // Capitalize first letter of each word
+    }));
 }
