@@ -60,7 +60,7 @@ function extractMainContent() {
       .replace(/\n{3,}/g, '\n\n')    
       .trim();
     
-    const MAX_LENGTH = 25000;  
+    const MAX_LENGTH = 15000;  
     if (text.length > MAX_LENGTH) {
       const lastPeriod = text.lastIndexOf('.', MAX_LENGTH);
       const lastSpace = text.lastIndexOf(' ', MAX_LENGTH);

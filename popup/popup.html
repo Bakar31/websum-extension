@@ -7,7 +7,15 @@
 <body>
   <h1>WebSum</h1>
   <div id="app">
-    <button id="summarize">Summarize</button>
+    <button id="summarize">
+      <span class="button-text">Summarize</span>
+      <span class="loader-spinner">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2"></circle>
+          <path d="M15 8C15 4.13401 11.866 1 8 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </span>
+    </button>
     <div id="summary"></div>
   </div>
   <script type="module" src="popup.js"></script>

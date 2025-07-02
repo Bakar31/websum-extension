@@ -1,30 +1,131 @@
 body {
   width: 400px;
-  padding: 10px;
-  font-family: sans-serif;
+  padding: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 h1 {
   text-align: center;
+  color: #2c3e50;
+  margin-bottom: 15px;
 }
 
 #app {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
 button {
-  padding: 10px;
+  position: relative;
+  padding: 10px 15px;
   background-color: #007bff;
   color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  height: 40px;
+}
+
+button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #b3d7ff;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.loader-spinner {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+.loader-spinner svg {
+  width: 100%;
+  height: 100%;
+}
+
+.loader-spinner circle {
+  color: currentColor;
+}
+
+.loader-spinner path {
+  color: currentColor;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+button.loading .button-text {
+  visibility: hidden;
+}
+
+button.loading .loader-spinner {
+  display: block;
 }
 
 #summary {
+  display: none;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border-left: 4px solid #007bff;
+  line-height: 1.5;
   white-space: pre-wrap;
-  background-color: #f0f0f0;
-  padding: 10px;
-  border-radius: 5px;
+}
+
+.loader {
+  text-align: center;
+  padding: 15px 0;
+  color: #6c757d;
+  font-style: italic;
+  position: relative;
+}
+
+.loader:after {
+  content: '...';
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  animation: ellipsis steps(4, end) 1.5s infinite;
+  width: 0;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1.25em;
+  }
 }
