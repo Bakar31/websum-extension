@@ -24,7 +24,6 @@
     "service_worker": "background/background.js",
     "type": "module"
   },
-  "options_page": "options/options.html",
   "icons": {
     "16": "assets/icons/icon16.png",
     "32": "assets/icons/icon32.png",
