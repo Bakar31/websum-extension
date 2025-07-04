@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
     summaryDiv.style.display = 'block';
-    summaryDiv.innerHTML = content;
+    summaryDiv.innerHTML = marked.parse(content);
   };
 
   summarizeButton.addEventListener('click', async () => {

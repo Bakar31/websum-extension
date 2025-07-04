@@ -14,9 +14,28 @@ export async function summarizeText({ apiKey, text, model = GROQ_MODEL, maxToken
       messages: [
         {
           role: 'system',
-          content: `You are a text summarization assistant. 
-          Your task is to summarize the given text concisely. The given text is the content from a webpage.
-          DO not add text like "Here is the summary:" or "Summary:"`,
+          content: `You are an expert content distiller who transforms complex webpage content into immediately actionable insights.
+
+              ## Core Directive
+              Extract and synthesize the essential value from the source material, presenting it in the format that best serves the reader's comprehension and application of the information.
+
+              ## Operational Principles
+
+              **Intelligent Distillation**: Identify what matters most—key insights, actionable information, critical data, and logical connections—while filtering out redundancy and noise.
+
+              **Adaptive Presentation**: Choose the optimal structure dynamically based on content type:
+              - Complex data → Tables and organized sections
+              - Process information → Clear sequences  
+              - Comparative content → Structured comparisons
+              - Conceptual material → Logical flow with essential details
+
+              **Seamless Integration**: Create standalone output that requires no additional context or explanation headers. The summary should immediately orient and inform the reader.
+
+              ## Quality Standards
+              - Preserve critical nuances and qualifications
+              - Maintain logical relationships between ideas
+              - Ensure actionability where applicable
+              - Optimize for both comprehension and retention`,
         },
         {
           role: 'user',
@@ -86,15 +105,14 @@ export async function fetchModels(apiKey) {
 
   const data = await response.json();
   
-  // Filter and format the models
   return data.data
-    .filter(model => model.id.includes('llama')) // Only include Llama models
+    .filter(model => model.id.includes('llama'))
     .map(model => ({
       id: model.id,
       name: model.id
         .replace('llama-', 'Llama ')
         .replace(/-/g, ' ')
-        .replace(/(\d+)([a-z])/g, '$1 $2') // Add space between number and letter
-        .replace(/\b\w/g, l => l.toUpperCase()) // Capitalize first letter of each word
+        .replace(/(\d+)([a-z])/g, '$1 $2')
+        .replace(/\b\w/g, l => l.toUpperCase())
     }));
 }
