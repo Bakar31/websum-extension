@@ -13,6 +13,12 @@ A powerful Chrome extension that provides AI-powered webpage summarization using
 - **Error Handling** - Helpful error messages for common issues
 - **No Data Collection** - All processing happens locally in your browser
 
+## 🎥 Demo
+
+[![WebSummarizer Demo](https://www.youtube.com/watch?v=dk1IWDE6AUs)](https://www.youtube.com/watch?v=dk1IWDE6AUs)
+
+*Click the image above to watch the demo video*
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -25,7 +31,7 @@ A powerful Chrome extension that provides AI-powered webpage summarization using
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/websum-extension.git
+   git clone https://github.com/bakar31/websum-extension.git
    cd websum-extension
    ```
 
@@ -39,7 +45,7 @@ A powerful Chrome extension that provides AI-powered webpage summarization using
 2. Click the gear icon (⚙️) to open settings
 3. Enter your Groq API key
 4. (Optional) Adjust model and token settings as needed
-5. Click "Save Settings"
+5. Click "Save"
 
 ## 🎯 Usage
 
@@ -92,17 +98,14 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-├── options/
-│   ├── options.html             # Settings page
-│   ├── options.js               # Settings logic
-│   └── options.css              # Settings styling
-├── assets/
-│   ├── icons/                   # Extension icons (16x16, 32x32, 48x48, 128x128)
-│   └── images/                  # UI assets
-└── utils/
-    ├── api.js                   # Groq API integration
-    ├── storage.js               # Chrome storage wrapper
-    ├── content-extractor.js     # Text extraction utilities
-    └── constants.js             # Configuration constants
+MIT License
+
+Copyright (c) 2025 Abu Bakar Siddik
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 ```
