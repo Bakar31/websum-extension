@@ -15,9 +15,7 @@ A powerful Chrome extension that provides AI-powered webpage summarization using
 
 ## 🎥 Demo
 
-[![WebSummarizer Demo](https://www.youtube.com/watch?v=dk1IWDE6AUs)](https://www.youtube.com/watch?v=dk1IWDE6AUs)
-
-*Click the image above to watch the demo video*
+[demo.webm](https://github.com/user-attachments/assets/64ae764a-d96e-4b77-ba0b-a0f8cce55810)
 
 ## 🚀 Getting Started
 
